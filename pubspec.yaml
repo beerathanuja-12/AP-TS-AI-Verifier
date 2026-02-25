@@ -1,0 +1,5 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0        # Backend API ki photo pampadaniki
+  image_picker: ^1.0.4 # Camera nundi photo teeyadaniki
