@@ -21,7 +21,7 @@ def validate_doc():
     file.save(path)
 
     # 1. OCR - Text Extraction
-    results = reader.readtext(path, detail=0)
+    results = reader.readtext(processed_img, detail=1, paragraph=True)
     text = " ".join(results).upper()
 
     # 2. Validation (Basic Example: Aadhaar checking)
@@ -36,4 +36,5 @@ def validate_doc():
     })
 
 if __name__ == "__main__":
+
     app.run(debug=True, port=5000)
