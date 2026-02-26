@@ -16,8 +16,7 @@ def preprocess_image(image_path):
     max_dim = 1000
     if max(height, width) > max_dim:
         scale = max_dim / max(height, width)
-        img = cv2.resize(img, (int(width * scale), int(height * scale)))
-
+        img = cv2.resize(img, None, fx=2.0, fy=2.0)
     # 3. Grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
