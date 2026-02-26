@@ -73,9 +73,38 @@ async def verify_document(file: UploadFile = File(...)):
                 [item["text"] for item in extracted_data]
             ),
             "details": extracted_data,
-            "average_confidence": avg_percentage,
-            "is_reliable": avg_percentage > 60
-        }
+          import re
+
+full_text = " ".join([item["text"] for item in extracted_data])
+
+# Extract Name (Capital words pattern)
+name_match = re.search(r'\b[A-Z]{3,}(?:\s[A-Z]{3,})+\b', full_text)
+name = name_match.group(0) if name_match else "Not Detected"
+
+# Extract Student ID pattern (example pattern like 25KNIA61D2)
+id_match = re.search(r'\b\d{2}[A-Z]{3,}\d+\b', full_text)
+student_id = id_match.group(0) if id_match else "Not Detected"
+
+# Extract Phone number
+phone_match = re.search(r'\b\d{10}\b', full_text)
+phone = phone_match.group(0) if phone_match else "Not Detected"
+
+# Extract Institute
+institute_match = re.search(r'NRI\s+Institute\s+of\s+Technology', full_text, re.IGNORECASE)
+institute = institute_match.group(0) if institute_match else "Not Detected"
+
+return {
+    "filename": file.filename,
+    "status": "success",
+    "detected_fields": {
+        "Institute": institute,
+        "Name": name,
+        "Student ID": student_id,
+        "Phone": phone
+    },
+    "average_confidence": avg_percentage,
+    "is_reliable": avg_percentage > 60
+}
 
     except Exception as e:
         return {"status": "error", "message": str(e)}
